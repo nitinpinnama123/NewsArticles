@@ -12,8 +12,24 @@ export default function NewsFormScreen({ route, navigation }) {
   );
 
   const saveArticle = async () => {
-    
-  };
+    const newArticle = { title, image, description }
+    try {
+        const existingArticles = await AsyncStorage.getItem("customArticles");
+        const articles = existingArticles ? JSON.parse(existingArticles) : [];
+
+        if (articleToEdit !== undefined) {
+            articles[articleIndex] = newArticle;
+            await AsyncStorage.setItem("customArticles", JSON.stringify(articles));
+            if (onArticleEdited) onArticleEdited();
+        } else {
+            articles.push(newArticle);
+            await AsyncStorage.setItem("customArticles", JSON.stringify(articles));
+        }
+        navigation.goBack();
+    } catch (error) {
+        console.error("Error saving the article:", error);
+    }
+};
 
   return (
     <View style={styles.container}>
