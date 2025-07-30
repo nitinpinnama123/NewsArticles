@@ -37,13 +37,22 @@ export default function MyArticlesScreen() {
   };
 
   const handleArticleClick = (article) => {
+    navigation.navigate("CustomNewsScreen", { article });
   };
 
-  const deleteArticle = async () => {
-    
+  const deleteArticle = async (index) => {
+    try {
+        const updatedArticles = [...articles];
+        updatedArticles.splice(index, 1);
+        await AsyncStorage.setItem("customArticles", JSON.stringify(updatedArticles));
+        setArticles(updatedArticles);
+    } catch (error) {
+        console.error("Error deleting article:", error);
+    }
   };
 
-  const editArticle = () => {
+  const editArticle = (article, index) => {
+    navigation.navigate("NewsFormScreen", { articleToEdit: article, articleIndex: index });
   };
 
   return (
