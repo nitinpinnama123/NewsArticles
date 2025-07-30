@@ -22,7 +22,11 @@ export default function MyArticlesScreen() {
 
   useEffect(() => {
     const fetchArticles = async () => {
-     
+     const storedArticles = await AsyncStorage.getItem("customArticles");
+     if (storedArticles) {
+        setArticles(JSON.parse(storedArticles));
+      }
+      setLoading(false);
     };
 
     fetchArticles();
@@ -66,13 +70,30 @@ export default function MyArticlesScreen() {
                   
                   <Text style={styles.articleTitle}>{article.title}</Text>
                   <Text style={styles.articleDescription} testID="articleDescp">
-                  
+                    {article.description?.substring(0, 50) + "..."}
                   </Text>
+                   {article.image && (
+                    <Image
+                      source={{ uri: article.image }}
+                      style={styles.articleImage}
+                    />
+                  )}
                 </TouchableOpacity>
 
                 {/* Edit and Delete Buttons */}
                 <View style={styles.actionButtonsContainer} testID="editDeleteButtons">
-                  
+                   <TouchableOpacity
+                    onPress={() => editArticle(article, index)}
+                    style={styles.editButton} 
+                  >
+                    <Text style={styles.editButtonText}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => deleteArticle(index)}
+                    style={styles.deleteButton}
+                  >
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
                  
                 </View>
               </View>
