@@ -33,7 +33,10 @@ export default function ArticleDetailScreen(props) {
     >
       {/* Article Image */}
       <View style={styles.imageContainer} testID="imageContainer">
-         
+        <Image
+            source={{ uri: article.thumbnail }}
+            style={styles.articleImage}
+        />   
       </View>
 
       {/* Back Button and Favorite Button */}
